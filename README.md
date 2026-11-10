@@ -42,6 +42,8 @@ are offline.
 
 Requirements: Docker Engine (or Docker Desktop) with Compose v2.
 
+> Just want commands, no explanations? See [RUN.md](RUN.md).
+
 ```bash
 # 1. Create your tunnel token file (see "Cloudflare Tunnel setup" below)
 cp .env.example .env
