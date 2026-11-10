@@ -1,0 +1,68 @@
+<main class="page">
+  <span class="badge"><span class="dot"></span> Angular 22 · standalone components · served by nginx</span>
+
+  <h1>Student Portal</h1>
+  <p class="lead">
+    A tiny Angular app with signals and built-in control flow. The student list
+    below is dummy data defined in <code>src/app/app.ts</code> — no backend needed.
+  </p>
+
+  <section class="stats" aria-label="Class statistics">
+    <article class="stat">
+      <span class="stat-label">Students</span>
+      <strong class="stat-value">{{ students().length }}</strong>
+    </article>
+    <article class="stat">
+      <span class="stat-label">Average GPA</span>
+      <strong class="stat-value">{{ averageGpa() }}</strong>
+    </article>
+    <article class="stat">
+      <span class="stat-label">Present today</span>
+      <strong class="stat-value">{{ presentCount() }} / {{ students().length }}</strong>
+    </article>
+  </section>
+
+  <div class="toolbar">
+    <input
+      class="search"
+      type="search"
+      placeholder="Search by name or grade…"
+      [value]="query()"
+      (input)="onSearch($event)"
+      aria-label="Search students"
+    />
+    <span class="count">{{ filtered().length }} of {{ students().length }} students</span>
+  </div>
+
+  <section class="table-wrap">
+    @if (filtered().length === 0) {
+      <p class="empty">No student matches “{{ query() }}”. Try “10-B” or “Ava”.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Grade</th>
+            <th scope="col">GPA</th>
+            <th scope="col">Attendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (student of filtered(); track student.id) {
+            <tr>
+              <td class="name">{{ student.name }}</td>
+              <td>{{ student.grade }}</td>
+              <td class="gpa">{{ student.gpa.toFixed(1) }}</td>
+              <td><span class="pill" [class]="student.attendance">{{ student.attendance }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+
+  <footer>
+    EM-NET school demo · Angular frontend container · exposed through a Cloudflare
+    Tunnel. All names and grades are fictional.
+  </footer>
+</main>

@@ -1,0 +1,189 @@
+:root {
+  --bg: #0f172a;
+  --panel: #16213b;
+  --panel-soft: #1d2a48;
+  --text: #e8eefc;
+  --muted: #9db0d1;
+  --accent: #61dafb;
+  --accent-2: #22c55e;
+  --border: #2b3b5e;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% -10%, #1e3a8a66 0%, transparent 45%),
+    radial-gradient(circle at 100% 0%, #0e749033 0%, transparent 40%),
+    var(--bg);
+  color: var(--text);
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #0b1220aa;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+h1 {
+  margin: 20px 0 8px;
+  font-size: clamp(30px, 5vw, 46px);
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32px 0 20px;
+}
+
+.search {
+  flex: 1 1 240px;
+  max-width: 360px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.search:focus {
+  outline: 2px solid #61dafb55;
+  border-color: var(--accent);
+}
+
+.count {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(160deg, var(--panel), var(--panel-soft));
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #3b82f6aa;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.code {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.credits {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.card h2 {
+  margin: 12px 0 6px;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.teacher {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.enrolled {
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+footer {
+  margin-top: 40px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #0b1220;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 32px 16px 48px;
+  }
+}

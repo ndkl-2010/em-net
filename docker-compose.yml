@@ -1,0 +1,101 @@
+# EM-NET · one tiny multi-language demo behind a Cloudflare Tunnel.
+#
+# Every folder is a stand-alone example:
+#   csharp/  -> ASP.NET Core minimal API   (port 8080 inside the container)
+#   python/  -> FastAPI                    (port 8000)
+#   nodejs/  -> Express                   (port 3000)
+#   angular/ -> Angular SPA on nginx      (port 80)
+#   react/   -> React + Vite on nginx     (port 80)
+#
+# "cloudflared" joins the same network, so the tunnel can reach each app by
+# service name (http://csharp:8080, http://react:80, ...).
+#
+# Quick start:
+#   cp .env.example .env      # then paste your tunnel token
+#   docker compose up --build -d
+#   docker compose ps
+#
+# Without a Cloudflare tunnel yet, start only the five apps:
+#   docker compose up --build csharp python nodejs angular react
+
+name: em-net
+
+services:
+  csharp:
+    build: ./csharp
+    image: em-net/csharp-courses-api:1.0.0
+    container_name: em-net-csharp
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    ports:
+      - "127.0.0.1:5001:8080" # loopback only: tunnel is the public path
+    networks:
+      - em-net
+
+  python:
+    build: ./python
+    image: em-net/python-students-api:1.0.0
+    container_name: em-net-python
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5002:8000" # host 5002 -> container 8000
+    networks:
+      - em-net
+
+  nodejs:
+    build: ./nodejs
+    image: em-net/nodejs-teachers-api:1.0.0
+    container_name: em-net-nodejs
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "127.0.0.1:5003:3000" # host 5003 -> container 3000
+    networks:
+      - em-net
+
+  angular:
+    build: ./angular
+    image: em-net/angular-portal:1.0.0
+    container_name: em-net-angular
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5004:80" # host 5004 -> container 80
+    networks:
+      - em-net
+
+  react:
+    build: ./react
+    image: em-net/react-catalog:1.0.0
+    container_name: em-net-react
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5005:80" # host 5005 -> container 80
+    networks:
+      - em-net
+
+  # Cloudflare Tunnel connector.
+  # Reads CLOUDFLARE_TUNNEL_TOKEN from .env, connects outbound to Cloudflare,
+  # and forwards the hostnames configured in the Zero Trust dashboard to the
+  # containers above. No inbound ports need to be opened on the host.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: em-net-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on:
+      - csharp
+      - python
+      - nodejs
+      - angular
+      - react
+    networks:
+      - em-net
+
+networks:
+  em-net:
+    name: em-net

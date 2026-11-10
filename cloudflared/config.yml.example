@@ -1,0 +1,23 @@
+# Example for a locally-managed Cloudflare Tunnel (Option 2 in README.md).
+# Copy to config.yml, replace the tunnel UUID/credentials path and the domains.
+#
+# The hostnames must also exist as DNS records:
+#   cloudflared tunnel route dns em-net csharp.example.com
+# ...for each hostname below.
+
+tunnel: em-net
+credentials-file: /etc/cloudflared/em-net.json
+
+ingress:
+  - hostname: csharp.example.com
+    service: http://csharp:8080
+  - hostname: python.example.com
+    service: http://python:8000
+  - hostname: nodejs.example.com
+    service: http://nodejs:3000
+  - hostname: angular.example.com
+    service: http://angular:80
+  - hostname: react.example.com
+    service: http://react:80
+  # Anything else gets a plain 404 instead of leaking to another service.
+  - service: http_status:404
